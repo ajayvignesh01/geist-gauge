@@ -1,16 +1,11 @@
 'use client'
 
-import { four, one, three, two } from '@/app/modes'
-import { Gauge, GaugeProps } from '@/components/gauge'
-import { GitHub, Vercel } from '@/components/icons'
+import { four, Mode, one, three, two } from '@/app/modes'
+import { Gauge } from '@/components/gauge'
+import { GitHub, Sparkle, Vercel } from '@/components/icons'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { useState } from 'react'
-
-interface Mode {
-  mode: string
-  props: GaugeProps
-}
 
 export default function Home() {
   const [mode, setMode] = useState<Mode[]>(one)
@@ -18,16 +13,20 @@ export default function Home() {
   return (
     <main
       className={cn(
-        'flex min-h-screen flex-col justify-center',
-        'container relative mx-auto max-w-[1100px] px-2 py-4 lg:py-16'
+        'flex flex-col justify-center',
+        'container relative mx-auto max-h-[1100px] max-w-[1100px] px-2 py-4 lg:py-16'
       )}
     >
       <div
         className={cn(
-          'bg-ds-background-100 flex flex-col',
-          'h-[calc(100vh_-_theme(spacing.8))] lg:h-[calc(100vh_-_theme(spacing.32))]'
+          'bg-ds-background-100 relative flex flex-col',
+          'h-[calc(100svh_-_theme(spacing.8))] min-h-96 lg:h-[calc(100svh_-_theme(spacing.32))]'
         )}
       >
+        {/* Corners */}
+        <Sparkle className='fill-ds-gray-1000 stroke-ds-gray-1000 absolute -left-2 -top-2 z-10 size-4' />
+        <Sparkle className='fill-ds-gray-1000 stroke-ds-gray-1000 absolute -bottom-2 -right-2 z-10 size-4' />
+
         {/* Header */}
         <div className=' flex basis-1/4 border border-b-0'>
           <Link
@@ -41,7 +40,7 @@ export default function Home() {
             <h1 className='text-5xl sm:text-7xl'>Gauge</h1>
           </div>
           <Link
-            href='https://github.com/ajayvignesh01?tab=repositories'
+            href='https://github.com/ajayvignesh01/geist-gauge'
             target='_blank'
             className='hover:bg-ds-gray-100/30 active:bg-ds-gray-200/70 flex basis-1/4 cursor-pointer items-center justify-center'
           >

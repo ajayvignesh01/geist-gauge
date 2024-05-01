@@ -1,3 +1,10 @@
+import { GaugeProps } from '@/components/gauge'
+
+export interface Mode {
+  mode: string
+  props: GaugeProps
+}
+
 export const one = [
   {
     mode: '1',
@@ -136,11 +143,12 @@ export const three = [
   }
 ]
 
-export const four = [
+export const four: Mode[] = [
   {
     mode: '4',
     props: {
       value: 75,
+      equal: true,
       primary: {
         0: 'var(--ds-green-100)',
         10: 'var(--ds-green-200)',
@@ -171,6 +179,7 @@ export const four = [
     mode: '4',
     props: {
       value: 60,
+      equal: true,
       primary: {
         0: 'var(--ds-green-100)',
         10: 'var(--ds-green-200)',
@@ -201,6 +210,7 @@ export const four = [
     mode: '4',
     props: {
       value: 40,
+      equal: true,
       primary: {
         0: 'var(--ds-green-100)',
         10: 'var(--ds-green-200)',
@@ -231,6 +241,7 @@ export const four = [
     mode: '4',
     props: {
       value: 25,
+      equal: true,
       primary: {
         0: 'var(--ds-green-100)',
         10: 'var(--ds-green-200)',
