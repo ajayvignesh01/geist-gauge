@@ -72,7 +72,7 @@ export default function Home() {
         >
           <button
             onClick={() => setExamples(one)}
-            className='flex cursor-pointer items-center justify-center border-r-[0.5px] hover:bg-ds-gray-100/30 group-data-[example="1"]:bg-ds-gray-200/70'
+            className='flex cursor-pointer items-center justify-center hover:bg-ds-gray-100/30 group-data-[example="1"]:bg-ds-gray-200/70'
           >
             <div className='flex h-6 w-8 flex-row items-center justify-center'>
               <div className='flex h-6 w-2 flex-col'>
@@ -95,7 +95,7 @@ export default function Home() {
           </button>
           <button
             onClick={() => setExamples(two)}
-            className='flex cursor-pointer items-center justify-center border-l-[0.5px] border-r-[0.5px] hover:bg-ds-gray-100/30 group-data-[example="2"]:bg-ds-gray-200/70'
+            className='flex cursor-pointer items-center justify-center border-l border-r-[0.5px] hover:bg-ds-gray-100/30 group-data-[example="2"]:bg-ds-gray-200/70'
           >
             <div className='flex h-6 w-8 flex-row items-center justify-center'>
               <div className='flex h-6 w-2 flex-col'>
@@ -118,7 +118,7 @@ export default function Home() {
           </button>
           <button
             onClick={() => setExamples(three)}
-            className='flex cursor-pointer items-center justify-center border-l-[0.5px] border-r-[0.5px] hover:bg-ds-gray-100/30 group-data-[example="3"]:bg-ds-gray-200/70'
+            className='flex cursor-pointer items-center justify-center border-l-[0.5px] border-r hover:bg-ds-gray-100/30 group-data-[example="3"]:bg-ds-gray-200/70'
           >
             <div className='flex h-6 w-8 flex-row items-center justify-center'>
               <div className='flex h-6 w-2 flex-col'>
@@ -141,7 +141,7 @@ export default function Home() {
           </button>
           <button
             onClick={() => setExamples(four)}
-            className='flex cursor-pointer items-center justify-center border-l-[0.5px] hover:bg-ds-gray-100/30 group-data-[example="4"]:bg-ds-gray-200/70'
+            className='flex cursor-pointer items-center justify-center hover:bg-ds-gray-100/30 group-data-[example="4"]:bg-ds-gray-200/70'
           >
             <div className='flex h-6 w-8 flex-row items-center justify-center'>
               <div className='flex h-6 w-2 flex-col'>

@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils'
-import type { SVGProps } from 'react'
+import type { CSSProperties, SVGProps } from 'react'
 
 export interface GaugeProps extends Omit<SVGProps<SVGSVGElement>, 'className'> {
   value: number
@@ -72,36 +72,55 @@ export function Gauge({
   const offsetFactor = equal ? 0.5 : 0
   const offsetFactorSecondary = 1 - offsetFactor
 
-  const strokeDasharrayPrimary = () => {
+  const primaryStrokeDasharray = () => {
     if (offsetFactor > 0 && strokePercent > 100 - gapPercent * 2 * offsetFactor) {
-      // calculation to gradually shift back to 0 offset as progress nears 100% (based on offset)
-      const value =
-        100 -
-        (100 - gapPercent * 2 * offsetFactor) -
-        (strokePercent - (100 - gapPercent * 2 * offsetFactor))
+      // calculation to gradually shift back to 0 offset as progress nears 100% when offsetFactor > 0
+      const subtract = -strokePercent + 100
 
-      return `${strokePercent * percentToPx - value * percentToPx} ${circumference}`
+      return `${Math.max(strokePercent * percentToPx - subtract * percentToPx, 0)} ${circumference}`
     } else {
-      const value = gapPercent * 2 * offsetFactor
+      const subtract = gapPercent * 2 * offsetFactor
 
-      return `${strokePercent * percentToPx - value * percentToPx} ${circumference}`
+      return `${Math.max(strokePercent * percentToPx - subtract * percentToPx, 0)} ${circumference}`
     }
   }
 
-  const transformPrimary = () => {
-    if (offsetFactor > 0 && strokePercent > 100 - gapPercent * 2 * offsetFactor) {
-      // calculation to gradually shift back to 0 offset as progress nears 100% (based on offset)
-      const value =
-        (100 -
-          (100 - gapPercent * 2 * offsetFactor) -
-          (strokePercent - (100 - gapPercent * 2 * offsetFactor))) *
-        0.5
+  const secondaryStrokeDasharray = () => {
+    if (offsetFactorSecondary < 1 && strokePercent < gapPercent * 2 * offsetFactorSecondary) {
+      // calculation to gradually shift back to 1 secondary offset as progress nears 100% when offsetFactorSecondary < 1
+      const subtract = strokePercent
 
-      return `rotate(${-90 + value * percentToDegree}deg)`
+      return `${Math.max((100 - strokePercent) * percentToPx - subtract * percentToPx, 0)} ${circumference}`
     } else {
-      const value = gapPercent * offsetFactor
+      const subtract = gapPercent * 2 * offsetFactorSecondary
 
-      return `rotate(${-90 + value * percentToDegree}deg)`
+      return `${Math.max((100 - strokePercent) * percentToPx - subtract * percentToPx, 0)} ${circumference}`
+    }
+  }
+
+  const primaryTransform = () => {
+    if (offsetFactor > 0 && strokePercent > 100 - gapPercent * 2 * offsetFactor) {
+      // calculation to gradually shift back to 0 offset as progress nears 100% when offsetFactor > 0
+      const add = 0.5 * (-strokePercent + 100)
+
+      return `rotate(${-90 + add * percentToDegree}deg)`
+    } else {
+      const add = gapPercent * offsetFactor
+
+      return `rotate(${-90 + add * percentToDegree}deg)`
+    }
+  }
+
+  const secondaryTransform = () => {
+    if (offsetFactorSecondary < 1 && strokePercent < gapPercent * 2 * offsetFactorSecondary) {
+      // calculation to gradually shift back to 1 secondary offset as progress nears 100% when offsetFactorSecondary < 1
+      const subtract = 0.5 * strokePercent
+
+      return `rotate(${360 - 90 - subtract * percentToDegree}deg) scaleY(-1)`
+    } else {
+      const subtract = gapPercent * offsetFactorSecondary
+
+      return `rotate(${360 - 90 - subtract * percentToDegree}deg) scaleY(-1)`
     }
   }
 
@@ -214,6 +233,37 @@ export function Gauge({
     }
   }
 
+  const primaryOpacity = () => {
+    if (
+      offsetFactor > 0 &&
+      strokePercent < gapPercent * 2 * offsetFactor &&
+      strokePercent < gapPercent * 2 * offsetFactorSecondary
+    ) {
+      return 0
+    } else return 1
+  }
+
+  const secondaryOpacity = () => {
+    if (
+      (offsetFactor === 0 && strokePercent > 100 - gapPercent * 2) ||
+      (offsetFactor > 0 &&
+        strokePercent > 100 - gapPercent * 2 * offsetFactor &&
+        strokePercent > 100 - gapPercent * 2 * offsetFactorSecondary)
+    ) {
+      return 0
+    } else return 1
+  }
+
+  const circleStyles: CSSProperties = {
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round',
+    strokeDashoffset: 0,
+    strokeWidth: strokeWidth,
+    transition: `all ${transition?.length}ms ease ${transition?.delay}ms`,
+    transformOrigin: '50% 50%',
+    shapeRendering: 'geometricPrecision'
+  }
+
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -231,26 +281,13 @@ export function Gauge({
         cy={circleSize / 2}
         r={radius}
         style={{
-          strokeLinecap: 'round',
-          strokeLinejoin: 'round',
-          strokeDashoffset: 0,
-          strokeWidth: strokeWidth,
-          strokeDasharray: `${Math.max((100 - strokePercent - gapPercent * 2 * offsetFactorSecondary) * percentToPx, 0)} ${circumference}`,
-          transition: `all ${transition?.length}ms ease ${transition?.delay}ms`,
-          transform: `rotate(${360 - 90 - gapPercent * percentToDegree * offsetFactorSecondary}deg) scaleY(-1)`,
-          transformOrigin: '50% 50%',
-          shapeRendering: 'geometricPrecision',
-          stroke: secondaryStroke()
+          ...circleStyles,
+          strokeDasharray: secondaryStrokeDasharray(),
+          transform: secondaryTransform(),
+          stroke: secondaryStroke(),
+          opacity: secondaryOpacity()
         }}
-        className={cn(
-          '',
-          strokePercent > 100 - gapPercent * 2 && 'opacity-0', // Normal
-          offsetFactor > 0 &&
-            strokePercent <= 100 - gapPercent * 2 * offsetFactor &&
-            strokePercent <= 100 - gapPercent * 2 * offsetFactorSecondary &&
-            'opacity-100', // Arc priority
-          typeof className === 'object' && className?.secondaryClassName
-        )}
+        className={cn('', typeof className === 'object' && className?.secondaryClassName)}
       />
 
       {/* primary */}
@@ -259,16 +296,11 @@ export function Gauge({
         cy={circleSize / 2}
         r={radius}
         style={{
-          strokeLinecap: 'round',
-          strokeLinejoin: 'round',
-          strokeDashoffset: 0,
-          strokeWidth: strokeWidth,
-          strokeDasharray: strokeDasharrayPrimary(),
-          transition: `all ${transition?.length}ms ease ${transition?.delay}ms`,
-          transform: transformPrimary(),
-          transformOrigin: '50% 50%',
-          shapeRendering: 'geometricPrecision',
-          stroke: primaryStroke()
+          ...circleStyles,
+          strokeDasharray: primaryStrokeDasharray(),
+          transform: primaryTransform(),
+          stroke: primaryStroke(),
+          opacity: primaryOpacity()
         }}
         className={cn('', typeof className === 'object' && className?.primaryClassName)}
       />
