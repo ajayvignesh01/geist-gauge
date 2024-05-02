@@ -5,7 +5,8 @@ import '../styles/globals.css'
 
 export const metadata: Metadata = {
   title: 'Geist Gauge',
-  description: 'A circular visual for conveying a percentage.'
+  description: 'A circular visual for conveying a percentage.',
+  metadataBase: new URL('https://geist-gauge.vercel.app')
 }
 
 export const viewport: Viewport = {
