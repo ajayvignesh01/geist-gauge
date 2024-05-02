@@ -27,6 +27,19 @@ export interface GaugeProps extends Omit<SVGProps<SVGSVGElement>, 'className'> {
       }
 }
 
+/**
+ * Renders a circular gauge using SVG. Allows configuration of colors, stroke, and animations.
+ * @param value - Current value of the gauge, expressed as a percentage.
+ * @param gapPercent -  Percentage of the total circumference that represents a gap in the gauge. Defaults to 5%.
+ * @param strokeWidth - Stroke width of the gauge. Defaults to 10px.
+ * @param equal - Determines if the gauge should have equal primary and secondary stroke lengths. Defaults to false.
+ * @param showValue - Option to display the numeric value inside the gauge. Defaults to true.
+ * @param primary - Primary color or set of colors for the gauge, with optional threshold values to determine color changes.
+ * @param secondary - Secondary color or set of colors for the gauge, similar to `primary`.
+ * @param transition - Transition settings for the gauge's animation, specifying the length, step, and delay of transitions.
+ * @param className - Class names for different parts of the gauge, including the SVG container and individual elements.
+ * @param props Configuration and properties for the svg.
+ */
 export function Gauge({
   value,
   gapPercent = 5,
@@ -93,13 +106,15 @@ export function Gauge({
   }
 
   const primaryStroke = () => {
-    // Default red --> amber --> green
+    // Default red --> amber --> blue --> green
     if (!primary) {
-      return strokePercent <= 33.33
+      return strokePercent <= 25
         ? 'var(--ds-red-700)'
-        : strokePercent <= 66.67
+        : strokePercent <= 50
           ? 'var(--ds-amber-700)'
-          : 'var(--ds-green-700)'
+          : strokePercent <= 75
+            ? 'var(--ds-blue-700)'
+            : 'var(--ds-green-700)'
     }
 
     // Specific default color or custom color
@@ -108,10 +123,10 @@ export function Gauge({
         ? 'var(--ds-red-700)'
         : primary === 'warning'
           ? 'var(--ds-amber-700)'
-          : primary === 'success'
-            ? 'var(--ds-green-700)'
-            : primary === 'info'
-              ? 'var(--ds-blue-700)'
+          : primary === 'info'
+            ? 'var(--ds-blue-700)'
+            : primary === 'success'
+              ? 'var(--ds-green-700)'
               : primary
     }
 
@@ -125,6 +140,19 @@ export function Gauge({
 
         if (strokePercent >= currentKey && (strokePercent < nextKey || !nextKey)) {
           primaryStroke = primary[currentKey]
+
+          if (['danger', 'warning', 'success', 'info'].includes(primaryStroke)) {
+            if (primaryStroke === 'danger') {
+              primaryStroke = 'var(--ds-red-700)'
+            } else if (primaryStroke === 'warning') {
+              primaryStroke = 'var(--ds-amber-700)'
+            } else if (primaryStroke === 'info') {
+              primaryStroke = 'var(--ds-blue-700)'
+            } else if (primaryStroke === 'success') {
+              primaryStroke = 'var(--ds-green-700)'
+            }
+          }
+
           break
         }
       }
@@ -141,13 +169,13 @@ export function Gauge({
     // Specific default color or custom color
     else if (typeof secondary === 'string') {
       return secondary === 'danger'
-        ? 'var(--ds-red-700)'
+        ? 'var(--ds-red-100)'
         : secondary === 'warning'
-          ? 'var(--ds-amber-700)'
-          : secondary === 'success'
-            ? 'var(--ds-green-700)'
-            : secondary === 'info'
-              ? 'var(--ds-blue-700)'
+          ? 'var(--ds-amber-100)'
+          : secondary === 'info'
+            ? 'var(--ds-blue-100)'
+            : secondary === 'success'
+              ? 'var(--ds-green-100)'
               : secondary
     }
 
@@ -166,6 +194,19 @@ export function Gauge({
           (stroke_percent_secondary < nextKey || !nextKey)
         ) {
           secondaryStroke = secondary[currentKey]
+
+          if (['danger', 'warning', 'success', 'info'].includes(secondaryStroke)) {
+            if (secondaryStroke === 'danger') {
+              secondaryStroke = 'var(--ds-red-100)'
+            } else if (secondaryStroke === 'warning') {
+              secondaryStroke = 'var(--ds-amber-100)'
+            } else if (secondaryStroke === 'info') {
+              secondaryStroke = 'var(--ds-blue-100)'
+            } else if (secondaryStroke === 'success') {
+              secondaryStroke = 'var(--ds-green-100)'
+            }
+          }
+
           break
         }
       }
@@ -179,7 +220,7 @@ export function Gauge({
       viewBox={`0 0 ${circleSize} ${circleSize}`}
       shapeRendering='crispEdges'
       className={cn(
-        'size-full fill-none stroke-2',
+        'size-full select-none fill-none stroke-2',
         typeof className === 'string' ? className : className?.svgClassName
       )}
       {...props}

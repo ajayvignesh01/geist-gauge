@@ -1,76 +1,75 @@
 import { GaugeProps } from '@/components/gauge'
 
-export interface Mode {
-  mode: string
+export interface Examples {
+  example: string
   props: GaugeProps
 }
 
-export const one = [
+export const one: Examples[] = [
   {
-    mode: '1',
+    example: '1',
     props: {
       value: 18
     }
   },
   {
-    mode: '1',
+    example: '1',
     props: {
-      value: 42,
-      primary: 'info'
+      value: 42
     }
   },
   {
-    mode: '1',
+    example: '1',
     props: {
       value: 66
     }
   },
   {
-    mode: '1',
+    example: '1',
     props: {
       value: 89.99
     }
   }
 ]
 
-export const two = [
+export const two: Examples[] = [
   {
-    mode: '2',
+    example: '2',
     props: {
-      value: 25,
+      value: 24,
       primary: 'danger',
-      secondary: 'var(--ds-red-100)'
+      secondary: 'danger'
     }
   },
   {
-    mode: '2',
+    example: '2',
     props: {
       value: 33,
-      primary: 'info',
-      secondary: 'var(--ds-blue-100)'
+      primary: 'warning',
+      secondary: 'warning'
     }
   },
   {
-    mode: '2',
+    example: '2',
     props: {
       value: 55,
-      primary: 'warning',
-      secondary: 'var(--ds-amber-100)'
+      primary: 'info',
+      secondary: 'info'
     }
   },
   {
-    mode: '2',
+    example: '2',
     props: {
-      value: 72,
+      value: 76,
       primary: 'success',
-      secondary: 'var(--ds-green-100)'
+      secondary: 'success'
     }
   }
 ]
 
-export const three = [
+export const three: Examples[] = [
   {
-    mode: '3',
+    example: '3',
     props: {
       value: 15,
       primary: {
@@ -88,7 +87,7 @@ export const three = [
     }
   },
   {
-    mode: '3',
+    example: '3',
     props: {
       value: 55,
       primary: {
@@ -106,7 +105,7 @@ export const three = [
     }
   },
   {
-    mode: '3',
+    example: '3',
     props: {
       value: 70,
       primary: {
@@ -124,7 +123,7 @@ export const three = [
     }
   },
   {
-    mode: '3',
+    example: '3',
     props: {
       value: 88,
       primary: {
@@ -143,9 +142,9 @@ export const three = [
   }
 ]
 
-export const four: Mode[] = [
+export const four: Examples[] = [
   {
-    mode: '4',
+    example: '4',
     props: {
       value: 75,
       equal: true,
@@ -176,7 +175,7 @@ export const four: Mode[] = [
     }
   },
   {
-    mode: '4',
+    example: '4',
     props: {
       value: 60,
       equal: true,
@@ -207,7 +206,7 @@ export const four: Mode[] = [
     }
   },
   {
-    mode: '4',
+    example: '4',
     props: {
       value: 40,
       equal: true,
@@ -238,7 +237,7 @@ export const four: Mode[] = [
     }
   },
   {
-    mode: '4',
+    example: '4',
     props: {
       value: 25,
       equal: true,
