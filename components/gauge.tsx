@@ -3,6 +3,7 @@ import type { CSSProperties, SVGProps } from 'react'
 
 export interface GaugeProps extends Omit<SVGProps<SVGSVGElement>, 'className'> {
   value: number
+  size?: number | string
   gapPercent?: number
   strokeWidth?: number
   equal?: boolean
@@ -30,6 +31,7 @@ export interface GaugeProps extends Omit<SVGProps<SVGSVGElement>, 'className'> {
 /**
  * Renders a circular gauge using SVG. Allows configuration of colors, stroke, and animations.
  * @param value - Current value of the gauge, expressed as a percentage.
+ * @param size = Width and height of the gauge. Defaults to 100%.
  * @param gapPercent -  Percentage of the total circumference that represents a gap in the gauge. Defaults to 5%.
  * @param strokeWidth - Stroke width of the gauge. Defaults to 10px.
  * @param equal - Determines if the gauge should have equal primary and secondary stroke lengths. Defaults to false.
@@ -42,6 +44,7 @@ export interface GaugeProps extends Omit<SVGProps<SVGSVGElement>, 'className'> {
  */
 export function Gauge({
   value,
+  size = '100%',
   gapPercent = 5,
   strokeWidth = 10,
   equal = false,
@@ -269,10 +272,12 @@ export function Gauge({
       xmlns='http://www.w3.org/2000/svg'
       viewBox={`0 0 ${circleSize} ${circleSize}`}
       shapeRendering='crispEdges'
-      className={cn(
-        'size-full select-none fill-none stroke-2',
-        typeof className === 'string' ? className : className?.svgClassName
-      )}
+      width={size}
+      height={size}
+      style={{ userSelect: 'none' }}
+      strokeWidth={2} // TODO: not needed?
+      fill='none'
+      className={cn('', typeof className === 'string' ? className : className?.svgClassName)}
       {...props}
     >
       {/*secondary*/}
@@ -312,10 +317,9 @@ export function Gauge({
           textAnchor='middle'
           dominantBaseline='middle'
           alignmentBaseline='central'
-          className={cn(
-            'fill-current text-[36px]',
-            typeof className === 'object' && className?.textClassName
-          )}
+          fill='currentColor'
+          fontSize={36}
+          className={cn('', typeof className === 'object' && className?.textClassName)}
         >
           {Math.round(strokePercent)}
         </text>

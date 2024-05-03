@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Geist Gauge
 
-## Getting Started
+This is a replication of Vercel's [Gauge](https://vercel.com/design/gauge) component from their Geist Design System. It can be used as a circular visual for conveying a percentage. You can view the demo here: https://gauge-demo.vercel.app.
 
-First, run the development server:
+![gauge demo image](./app/opengraph-image.png)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Requirements
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Will work in any React application.
+- Tailwind is NOT a requirement, but can be used to adjust the styling of this component through the className prop.
+- This is a standalone component that you need to copy/paste to your codebase. I might make it an NPM package in the future. 
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+1. Copy the `gauge` component from here: [gauge.tsx](https://github.com/mfts/gauge-demo/blob/main/app/gauge.tsx)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+2. Copy the required colors from [global.css](https://github.com/ajayvignesh01/geist-gauge). At minimum, you will need gray, red, amber, blue, and green.
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. Import into your page
+   ```tsx
+   import { Gauge } from "@/components/gauge";
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+   export default function Home() {
+     return (
+      <>
+        // ...
+        <Gauge value={75} className='size-24' />
+        // ...
+      </>
+     )
+   }
+   ```
+
+
+## API
+
+The `Gauge` component requires a `value` prop and supports many others to customize it according to your needs.
+
+- `value`: a **number** from `0` to `100` representing the current value of the gauge, expressed as a percentage.
+- `size`: a **number** to represent pixels or a **string** like 100% to take up the parent containers dimensions, which is useful when you want to for example, dynamically size the gauge based on screen width using tailwind's breakpoint prefix classNames. Defaults to `"100%"`.
+- `gapPercent`: a **number** to set the gap percent between primary and secondary arcs. Defaults to `5%`.
+- `strokeWidth`: a **number** to set the arc thickness. Defaults to `10px`.
+- `equal`: a **boolean** to determine whether the gauge should have equal primary and secondary arc lengths. Defaults to `false`.
+- `showValue`: a **boolean** to determine whether the % value should be shown inside the gauge. Defaults to `true`.
+- `primary` - a **string** color value for the primary arc. You can also pass an **array** with threshold values and the respective colors to make it dynamic. Defaults to a dynamic range with 25% steps going `red, amber, blue, green`.
+- `secondary` - a **string** color value for the secondary arc. You can also pass an **array** with threshold values and the respective colors to make it dynamic. Defaults to a hue of `gray`.
+- `transition` - an **array** of transition settings for the gauge's animation, specifying the length, step, and delay of transitions represented in ms. Defaults to `1000, 200, 0` respectively.
+- `className` - a **string** to represent the className of the svg. You can also pass an **object** with svgClassName, primaryClassName, secondaryClassName, and textClassName for more customization.
+- `props` - any other prop accepted by a React SVG element.
+
+
+## Inspiration & Credits
+
+- Thanks to the [@vercel](https://x.com/vercel) design team for the awesome component.
+- Thanks to [@mfts](https://github.com/mfts/gauge-demo) work on the previous version of this component.
