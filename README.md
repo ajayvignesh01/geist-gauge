@@ -1,6 +1,6 @@
 # Geist Gauge
 
-This is a replication of Vercel's [Gauge](https://vercel.com/design/gauge) component from their Geist Design System. It can be used as a circular visual for conveying a percentage. You can view the demo here: https://gauge-demo.vercel.app.
+This is a replication of Vercel's [Gauge](https://vercel.com/design/gauge) component from their Geist Design System. It can be used as a circular visual for conveying a percentage. You can view the demo here: https://geist-gauge.vercel.app.
 
 ![gauge demo image](./app/opengraph-image.png)
 
@@ -14,10 +14,10 @@ This is a replication of Vercel's [Gauge](https://vercel.com/design/gauge) compo
 - This is a standalone component that you need to copy/paste to your codebase. I might make it an NPM package in the future. 
 
 
-1. Copy the `gauge` component from here: [gauge.tsx](https://github.com/mfts/gauge-demo/blob/main/app/gauge.tsx)
+1. Copy the `gauge` component from here: [gauge.tsx](https://github.com/ajayvignesh01/gauge-demo/blob/main/app/gauge.tsx)
 
 
-2. Copy the required colors from [global.css](https://github.com/ajayvignesh01/geist-gauge). At minimum, you will need gray, red, amber, blue, and green.
+2. Copy the required colors from [global.css](https://github.com/ajayvignesh01/geist-gauge/blob/main/styles/globals.css). At minimum, you will need gray, red, amber, blue, and green.
 
 
 3. Import into your page
